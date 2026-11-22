@@ -1,0 +1,50 @@
+[project]
+name = "lume"
+version = "1.0.0"
+description = "Lume: finanças pessoais que rodam no seu computador."
+requires-python = ">=3.13"
+license = "AGPL-3.0-only"
+authors = [{ name = "Guilherme Henn" }]
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn>=0.32",
+    "sqlmodel>=0.0.45",
+    "alembic>=1.14",
+    "platformdirs>=4.3",
+    "cryptography>=44",
+]
+
+[project.urls]
+Homepage = "https://github.com/guilhermehenn/lume"
+Documentation = "https://github.com/guilhermehenn/lume/tree/main/docs"
+Issues = "https://github.com/guilhermehenn/lume/issues"
+Changelog = "https://github.com/guilhermehenn/lume/blob/main/CHANGELOG.md"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3",
+    "httpx>=0.28",
+    "ruff>=0.9",
+]
+
+[tool.uv]
+# O back-end é um aplicativo, não uma biblioteca: roda com "python -m app".
+package = false
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+addopts = "-q"
+# Aviso da Starlette sobre o cliente de testes (só afeta os testes, não o app).
+filterwarnings = ["ignore:Using `httpx` with `starlette.testclient`"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+extend-exclude = ["app/data/migrations/versions"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "S"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101", "S105", "S106", "S108"]

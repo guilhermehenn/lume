@@ -1,0 +1,51 @@
+name: Sugerir uma funcionalidade
+description: Uma ideia para o Lume resolver um problema seu.
+title: "[Sugestão] "
+labels: ["sugestão", "triagem"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Boas sugestões começam pelo **problema**, não pela solução. Confira antes o
+        [roteiro no README](https://github.com/guilhermehenn/lume#roteiro) e as
+        [issues abertas](https://github.com/guilhermehenn/lume/issues?q=is%3Aissue+label%3Asugest%C3%A3o).
+  - type: textarea
+    id: problem
+    attributes:
+      label: Qual problema você quer resolver?
+      placeholder: Todo mês eu lanço o aluguel e a internet à mão, e às vezes esqueço.
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: Como você imagina a solução
+      placeholder: Lançamentos recorrentes, com aviso quando vencerem.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: O que você faz hoje (alternativas)
+  - type: dropdown
+    id: area
+    attributes:
+      label: Área
+      options:
+        - Início
+        - Lançamentos
+        - Investimentos
+        - Bancos
+        - Categorias
+        - Relatórios
+        - Exportar
+        - Cofres e Minha conta
+        - Configurações
+        - Instalação e atualização
+        - Outra
+  - type: checkboxes
+    id: help
+    attributes:
+      label: Contribuição
+      options:
+        - label: Posso ajudar a implementar ou testar.

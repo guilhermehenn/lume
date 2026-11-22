@@ -1,0 +1,63 @@
+name: Release
+
+# Publica uma release quando uma tag vX.Y.Z é enviada: confere a versão, monta a interface,
+# empacota lume-vX.Y.Z.zip (com frontend/dist pronto) e usa as notas do CHANGELOG.md.
+on:
+  push:
+    tags: ["v*.*.*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Conferir a versão
+        run: |
+          v="${GITHUB_REF_NAME#v}"
+          grep -q "APP_VERSION = '$v'" frontend/src/app/version.ts
+          grep -q "\"version\": \"$v\"" frontend/package.json
+          grep -q "__version__ = \"$v\"" backend/app/__init__.py
+          grep -q "^version = \"$v\"" backend/pyproject.toml
+          grep -q "^## \[$v\]" CHANGELOG.md
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Montar a interface
+        working-directory: frontend
+        run: |
+          npm install --no-audit --no-fund
+          npm run build
+
+      - name: Empacotar
+        run: |
+          out="$RUNNER_TEMP/pkg"
+          mkdir -p "$out"
+          git archive --format=tar --prefix=lume/ HEAD | tar -x -C "$out"
+          cp -r frontend/dist "$out/lume/frontend/dist"
+          (cd "$out" && zip -qr "$GITHUB_WORKSPACE/lume-$GITHUB_REF_NAME.zip" lume)
+
+      - name: Notas da versão
+        run: |
+          v="${GITHUB_REF_NAME#v}"
+          awk -v v="$v" '
+            $0 ~ "^## \\[" v "\\]" { found = 1; next }
+            found && /^## \[/ { exit }
+            found && /^\[.*\]: / { exit }
+            found { print }
+          ' CHANGELOG.md > notes.md
+          test -s notes.md
+
+      - name: Publicar
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" "lume-$GITHUB_REF_NAME.zip" \
+            --title "Lume ${GITHUB_REF_NAME#v}" \
+            --notes-file notes.md \
+            --verify-tag

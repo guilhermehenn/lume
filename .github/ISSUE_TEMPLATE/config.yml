@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Relatar uma falha de segurança
+    url: https://github.com/guilhermehenn/lume/security/advisories/new
+    about: Relato privado. Não abra uma issue pública para falhas de segurança.
+  - name: Dúvidas e conversas
+    url: https://github.com/guilhermehenn/lume/discussions
+    about: Perguntas sobre instalação e uso, ideias ainda sem forma e mostre como você usa o Lume.

@@ -1,0 +1,17 @@
+Lume: suas finanças, com clareza.
+Copyright (C) 2026 Guilherme Henn e colaboradores.
+
+This program is free software: you can redistribute it and/or modify it under the terms of
+the GNU Affero General Public License as published by the Free Software Foundation,
+version 3 of the License (SPDX: AGPL-3.0-only).
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License along with this
+program (file LICENSE). If not, see <https://www.gnu.org/licenses/>.
+
+Componentes de terceiros e as licenças de cada um: docs/licencas-de-terceiros.md.
+A fonte Inter vai embutida sob a SIL Open Font License 1.1
+(frontend/public/fonts/LICENSE-Inter.txt).

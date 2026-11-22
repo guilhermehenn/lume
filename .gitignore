@@ -1,0 +1,37 @@
+# Configuração local (pode ter caminhos pessoais)
+.env
+
+# Dados: o banco e os backups ficam FORA do projeto, mas por garantia
+*.db
+*.db-wal
+*.db-shm
+*.db-journal
+*.partial
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Node / front-end
+node_modules/
+frontend/dist/
+frontend/.build-tmp/
+
+# Logs do setup
+setup/logs/
+
+# Sistemas operacionais e editores
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+*.swp
+
+# O uv.lock DEVE ir para o Git (versões travadas). Não ignore.
+frontend/test-results/
+frontend/playwright-report/

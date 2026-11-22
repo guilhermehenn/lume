@@ -1,0 +1,40 @@
+LUME 1.0.0 — COMO COMEÇAR
+
+O Lume é um aplicativo de finanças pessoais que roda no seu computador.
+Na primeira configuração, é necessário ter internet: o instalador baixa
+as ferramentas e bibliotecas necessárias. A interface abre no navegador.
+
+WINDOWS 10 OU 11
+
+1. Antes de extrair o ZIP, clique nele com o botão direito, abra Propriedades
+   e, se aparecer a opção Desbloquear, marque-a e clique em OK.
+2. Extraia o ZIP inteiro para uma pasta fora do OneDrive, por exemplo:
+   C:\Projetos\lume
+3. Abra a pasta extraída e dê dois cliques em configurar-windows.bat.
+4. Aguarde a configuração terminar e siga as instruções que aparecerem.
+   A instalação pode pedir permissão para instalar ferramentas.
+5. Quando terminar, dê dois cliques em iniciar-windows.bat. O navegador
+   abrirá o Lume. Mantenha a janela do terminal aberta enquanto estiver usando.
+
+MACOS 12 OU MAIS RECENTE
+
+1. Extraia o ZIP inteiro em uma pasta fora do iCloud Drive.
+2. Abra o Terminal. Digite cd e um espaço, arraste a pasta lume para a janela
+   e pressione Enter.
+3. Digite o comando abaixo e pressione Enter:
+
+   bash configurar-macos.command
+
+4. Aguarde a configuração terminar e siga as instruções que aparecerem.
+5. Depois disso, dê dois cliques em iniciar-macos.command para abrir o Lume.
+
+PRIMEIRO USO
+
+Crie seu cofre com nome, e-mail e senha. Guarde o código de recuperação
+em um lugar seguro: ele é mostrado durante a criação. Os dados do cofre
+ficam no computador, em um arquivo que não é criptografado. Proteja sua
+conta no computador e mantenha cópias de segurança em local seguro.
+
+Se já usa outra versão, faça um backup antes de atualizar. Para ver o guia
+completo, consulte README.md e docs/operacao.md. O código é distribuído sob
+AGPL-3.0; o texto da licença está no arquivo LICENSE.

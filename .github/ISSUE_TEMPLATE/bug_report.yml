@@ -1,0 +1,74 @@
+name: Relatar um erro
+description: Algo não funciona como deveria.
+title: "[Erro] "
+labels: ["bug", "triagem"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Obrigado por ajudar a melhorar o Lume! Antes de enviar:
+        - procure nas [issues abertas](https://github.com/guilhermehenn/lume/issues) se alguém já relatou;
+        - **falhas de segurança não vão aqui**: siga o [SECURITY.md](https://github.com/guilhermehenn/lume/blob/main/SECURITY.md);
+        - **não cole dados financeiros reais**, e-mails nem senhas. Use valores inventados.
+  - type: textarea
+    id: what
+    attributes:
+      label: O que aconteceu
+      description: Descreva o erro em poucas palavras.
+      placeholder: Ao excluir um banco com lançamentos, o saldo total mudou.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Passos para reproduzir
+      placeholder: |
+        1. Abra Bancos
+        2. Clique em …
+        3. Veja que …
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: O que você esperava
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Versão do Lume
+      description: Em Configurações → Sobre.
+      placeholder: "1.0.0"
+    validations:
+      required: true
+  - type: dropdown
+    id: os
+    attributes:
+      label: Sistema operacional
+      options:
+        - Windows 11
+        - Windows 10
+        - macOS (Apple Silicon)
+        - macOS (Intel)
+        - Outro
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Navegador e versão
+      placeholder: Edge 131, Chrome 131, Safari 18…
+  - type: textarea
+    id: logs
+    attributes:
+      label: Registros (opcional)
+      description: |
+        Mensagens do terminal do Lume ou do log em `logs/` na pasta de dados.
+        Confira antes se não há e-mails ou nomes pessoais.
+      render: text
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Capturas de tela (opcional)
+      description: Use "Ocultar valores" (tecla H) antes de capturar a tela.
