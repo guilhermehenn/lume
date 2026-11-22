@@ -58,7 +58,7 @@ jobs:
         run: npm run test:unit
       - name: Montar a interface
         run: npm run build
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: frontend-dist
           path: frontend/dist
@@ -93,7 +93,7 @@ jobs:
         env:
           LUME_BROWSER: chrome
         run: npm run test:e2e
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: e2e-test-results
