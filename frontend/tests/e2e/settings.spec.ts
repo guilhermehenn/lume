@@ -39,6 +39,31 @@ test.beforeEach(async ({ page }) => {
   await mockApi(page)
 })
 
+test('fechar o aviso rapidamente libera a tela e permite abrir outro', async ({ page }) => {
+  await createVault(page)
+  await page.goto('/#/settings')
+  const dialog = page.getByRole('alertdialog')
+  const open = page.getByRole('button', { name: 'Carregar dados de exemplo' })
+
+  // Dispara o clique assim que o aviso aparece, incluindo durante a animação de entrada.
+  for (let i = 0; i < 3; i++) {
+    await open.click()
+    await expect(dialog).toHaveCount(1)
+    await dialog.getByRole('button', { name: 'Cancelar' }).dispatchEvent('click')
+    await expect(dialog).toHaveCount(0)
+  }
+
+  await open.click()
+  await expect(dialog).toHaveCount(1)
+  await dialog.getByRole('button', { name: 'Carregar dados de exemplo' }).dispatchEvent('click')
+  await expect(page.getByText('Dados de exemplo carregados')).toBeVisible()
+  await expect(dialog).toHaveCount(0)
+  await page.getByRole('button', { name: 'Apagar tudo' }).click()
+  await expect(dialog).toHaveCount(1)
+  await dialog.getByRole('button', { name: 'Cancelar' }).click()
+  await expect(dialog).toHaveCount(0)
+})
+
 test.describe('restaurar', () => {
   test.use({ timezoneId: 'America/Sao_Paulo' })
 

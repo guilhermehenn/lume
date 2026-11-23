@@ -2,7 +2,7 @@
 // Headless UI cuida do foco preso, Esc para fechar e leitores de tela.
 
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
-import type { FormEvent, ReactNode } from 'react'
+import { useEffect, useState, type FormEvent, type ReactNode } from 'react'
 import { LuX } from 'react-icons/lu'
 import { cn } from '../lib/cn'
 import { Button } from './primitives'
@@ -103,6 +103,20 @@ export function ConfirmDialog({
   children?: ReactNode
   confirmDisabled?: boolean
 }) {
+  const [keepMounted, setKeepMounted] = useState(open)
+  useEffect(() => {
+    if (open) {
+      setKeepMounted(true)
+      return
+    }
+    if (!keepMounted) return
+    // A transição normal termina em 250 ms. Se a entrada for interrompida, o Headless UI pode
+    // manter o diálogo invisível montado; libera a tela depois de dar tempo à animação de saída.
+    const timer = window.setTimeout(() => setKeepMounted(false), 600)
+    return () => window.clearTimeout(timer)
+  }, [open, keepMounted])
+
+  if (!open && !keepMounted) return null
   return (
     <Dialog open={open} onClose={onClose} className="relative z-[55]" role="alertdialog">
       <DialogBackdrop transition className="fixed inset-0 bg-black/40 backdrop-blur-[2px] transition-opacity duration-200 data-closed:opacity-0" />
