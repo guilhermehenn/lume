@@ -8,6 +8,7 @@
 import { useEffect, useSyncExternalStore } from 'react'
 import { createPortal } from 'react-dom'
 import { LuCircleAlert, LuCircleCheck, LuInfo, LuX } from 'react-icons/lu'
+import { getUndoToken, subscribe } from '../data/store'
 import { cn } from '../lib/cn'
 
 export type ToastTone = 'success' | 'error' | 'info'
@@ -16,7 +17,7 @@ export interface ToastItem {
   id: number
   tone: ToastTone
   message: string
-  action?: { label: string; onClick: () => void }
+  action?: { label: string; onClick: () => void; isValid?: () => boolean }
   leaving?: boolean
 }
 
@@ -68,6 +69,7 @@ const TONE_COLOR = { success: 'text-income', error: 'text-expense', info: 'text-
 
 export function Toaster({ closeLabel }: { closeLabel: string }) {
   const list = useToasts()
+  useSyncExternalStore(subscribe, getUndoToken, getUndoToken)
   useEffect(() => () => timers.forEach((t) => window.clearTimeout(t)), [])
   return createPortal(
     <div
@@ -89,7 +91,7 @@ export function Toaster({ closeLabel }: { closeLabel: string }) {
           >
             <Icon className={cn('size-4 shrink-0', TONE_COLOR[item.tone])} aria-hidden />
             <span className="min-w-0 flex-1 font-medium">{item.message}</span>
-            {item.action && (
+            {item.action && (item.action.isValid?.() ?? true) && (
               <button
                 type="button"
                 className="rounded-full bg-fill px-3 py-1 font-semibold text-accent transition-colors hover:bg-fill-2 active:scale-95"

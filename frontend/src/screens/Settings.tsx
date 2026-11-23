@@ -15,7 +15,7 @@ import { CURRENCIES } from '../lib/money'
 import { cn } from '../lib/cn'
 import { BACKUP_MAX_BYTES, BackupError, backupFilename, createBackup, readBackup, type ParsedBackup } from '../data/backup'
 import { fullName, useAccount, useVault } from '../data/session'
-import { actions, undo, updateSettings, useData, useSettings, useSyncStatus } from '../data/store'
+import { actions, captureUndoAction, updateSettings, useData, useSettings, useSyncStatus } from '../data/store'
 import type { DataState, Language, Theme } from '../data/types'
 import { LANGUAGES, useI18n } from '../i18n'
 import { Select } from '../ui/inputs'
@@ -146,17 +146,16 @@ export function Settings() {
 
   const confirm = () => {
     if (!pending) return
-    const undoAction = { label: t('common.undo'), onClick: () => undo() }
     try {
       if (pending.kind === 'restore') {
         actions.importBackup(pending.backup)
-        toast(t('settings.restored'), { action: undoAction })
+        toast(t('settings.restored'), { action: captureUndoAction(t('common.undo')) })
       } else if (pending.kind === 'sample') {
         actions.loadSample()
-        toast(t('settings.sampleLoaded'), { action: undoAction })
+        toast(t('settings.sampleLoaded'), { action: captureUndoAction(t('common.undo')) })
       } else {
         actions.resetAll()
-        toast(t('settings.resetDone'), { action: undoAction })
+        toast(t('settings.resetDone'), { action: captureUndoAction(t('common.undo')) })
       }
     } catch {
       toast.error(pending.kind === 'restore' ? t('errors.backupInvalid') : t('errors.generic'))

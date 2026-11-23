@@ -44,6 +44,17 @@ let conflictsInARow = 0
 let undoState: DataState | null = null
 /** Configurações de antes da última restauração de backup, para o "Desfazer". */
 let undoSettings: Partial<Settings> | null = null
+let undoToken = 0
+
+/** Invalida os avisos de desfazer ligados a um estado anterior. */
+function clearUndo(): void {
+  undoState = null
+  undoSettings = null
+  undoToken++
+}
+
+/** Versão usada pelos avisos para detectar alterações no cofre. */
+export const getUndoToken = (): number => undoToken
 
 const listeners = new Set<() => void>()
 const emit = () => listeners.forEach((l) => l())
@@ -128,8 +139,7 @@ export function hydrate(vaultId: string, data: DataState, rev: number, settings:
   paused = false
   retryDelay = 0
   conflictsInARow = 0
-  undoState = null
-  undoSettings = null
+  clearUndo()
   setVaultHeader(vaultId)
   snapshot = { data, settings: fromServerSettings(settings), vaultId, sync: 'idle' }
   writePrefs({ language: snapshot.settings.language, theme: snapshot.settings.theme })
@@ -149,6 +159,7 @@ export function resume(vaultId: string, data: DataState, rev: number, settings: 
   revision = rev
   paused = false
   setVaultHeader(vaultId)
+  clearUndo()
   snapshot = { ...snapshot, data: rebase(data, pending), settings: { ...fromServerSettings(settings), ...keptSettings } }
   emit()
   schedule()
@@ -161,8 +172,7 @@ export function clearVault(): void {
   pending = emptyPending()
   pendingSettings = {}
   paused = false
-  undoState = null
-  undoSettings = null
+  clearUndo()
   setVaultHeader(null)
   const prefs = readPrefs()
   snapshot = { data: model.emptyState(), settings: { ...defaultSettings(), language: prefs.language, theme: prefs.theme }, vaultId: null, sync: 'idle' }
@@ -200,8 +210,7 @@ async function reloadData(): Promise<void> {
     const result = await vaultApi.data()
     if (snapshot.vaultId !== vaultId) return
     revision = result.revision
-    undoState = null
-    undoSettings = null
+    clearUndo()
     snapshot = { ...snapshot, data: isEmpty(pending) ? result.data : rebase(result.data, pending) }
     emit()
   } catch {
@@ -272,8 +281,7 @@ async function flush(): Promise<void> {
         const server = await vaultApi.data()
         revision = server.revision
         snapshot = { ...snapshot, data: rebase(server.data, pending) }
-        undoState = null
-        undoSettings = null
+        clearUndo()
         emit()
         notify('conflict')
       } catch {
@@ -284,8 +292,7 @@ async function flush(): Promise<void> {
     } else {
       // Recusado (dados inválidos, conflito repetido): volta ao que está salvo no cofre.
       pending = emptyPending()
-      undoState = null
-      undoSettings = null
+      clearUndo()
       notify('save-failed')
       await reloadData()
     }
@@ -304,6 +311,7 @@ function commit(next: DataState, undoable = false, restore = false, checkpoint: 
   const changes = diff(snapshot.data, next)
   changes.restore = restore
   changes.checkpoint = checkpoint
+  undoToken++
   undoState = undoable ? snapshot.data : null
   undoSettings = null
   snapshot = { ...snapshot, data: next }
@@ -325,6 +333,17 @@ export function undo(): boolean {
   // Restaurar um backup também troca idioma, tema, moeda...: desfazer volta tudo.
   if (settings) updateSettings(settings)
   return true
+}
+
+/** Vincula o aviso à operação atual, sem permitir desfazer outra alteração mais recente. */
+export function captureUndoAction(label: string) {
+  const token = undoToken
+  const isValid = () => undoState !== null && token === undoToken
+  return {
+    label,
+    isValid,
+    onClick: () => { if (isValid()) undo() },
+  }
 }
 
 export function updateSettings(patch: Partial<Settings>): void {

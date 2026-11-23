@@ -3,7 +3,7 @@
 // banco só sai, e o aviso diz se um saldo inicial deixa de contar.
 
 import { useState } from 'react'
-import { actions, undo, useData } from '../../data/store'
+import { actions, captureUndoAction, useData } from '../../data/store'
 import type { Bank } from '../../data/types'
 import { useI18n } from '../../i18n'
 import { BankAvatar, MASK, useHidden, useLatest } from '../../ui/display'
@@ -47,7 +47,7 @@ export function DeleteBankDialog({
       actions.deleteBank(bank.id, moving ? target : undefined)
       const message =
         moving && targetBank ? t('banks.deletedMoved', { name: bank.name, count, target: targetBank.name }) : t('banks.deleted')
-      toast(message, { action: { label: t('common.undo'), onClick: () => undo() } })
+      toast(message, { action: captureUndoAction(t('common.undo')) })
       onDeleted?.()
     } catch {
       toast.error(t('errors.generic'))

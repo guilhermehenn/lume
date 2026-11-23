@@ -60,6 +60,10 @@ test.describe('com cadastros prontos', () => {
     await expect(sheet.locator('#entry-bank')).toContainText('Itaú')
     await expect(sheet.locator('#entry-date')).toHaveValue(yesterday)
 
+    // A interface bloqueia reenvios por 400 ms após salvar, para evitar lançamentos duplicados.
+    // O teste pode preencher o próximo formulário mais depressa que esse intervalo.
+    await page.waitForTimeout(500)
+
     // O segundo pelo atalho (Ctrl + Shift + Enter); depois fecha com Salvar.
     await fillExpense(page, sheet, { cents: '890', who: 'Banca do Zé', category: 'Mercado' })
     await sheet.locator('#entry-counterparty').press('Control+Shift+Enter')

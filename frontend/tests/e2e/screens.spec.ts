@@ -38,9 +38,10 @@ test('bancos: criar, tornar principal e excluir movendo lançamentos', async ({ 
   await dialog.getByRole('button', { name: 'Mover lançamentos para' }).click()
   await page.getByRole('option', { name: 'Itaú' }).click()
   await dialog.getByRole('button', { name: 'Mover e excluir' }).click()
-  await expect(page.getByText(/^Nubank excluído\. \d+ lançamentos foram para Itaú\.$/)).toBeVisible()
+  const deletedToast = page.getByText(/^Nubank excluído\. \d+ lançamentos foram para Itaú\.$/).locator('..')
+  await expect(deletedToast).toBeVisible()
   await expect(nubank).toHaveCount(0)
-  await page.getByRole('button', { name: 'Desfazer' }).click()
+  await deletedToast.getByRole('button', { name: 'Desfazer' }).click()
   await expect(page.getByRole('listitem').filter({ hasText: 'Nubank' })).toHaveCount(1)
 })
 
