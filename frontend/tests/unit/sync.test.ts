@@ -143,7 +143,7 @@ describe('e-mail e senha na criação do cofre', () => {
     assert.equal(suggestEmail('ana@outlok.com'), 'ana@outlook.com')
     assert.equal(suggestEmail('Gui.Henn@Yaho.com.br'), 'Gui.Henn@yahoo.com.br')
     assert.equal(suggestEmail('gui@gmail.com'), null)
-    assert.equal(suggestEmail('gui@cwi.com.br'), null) // domínio próprio: nada a sugerir
+    assert.equal(suggestEmail('gui@empresa.com.br'), null) // domínio próprio: nada a sugerir
     assert.equal(suggestEmail('gui@'), null)
     assert.ok(isValidEmail('  gui+lume@example.com.br '))
     assert.ok(!isValidEmail('gui@@example.com'))
