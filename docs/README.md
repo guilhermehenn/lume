@@ -16,7 +16,6 @@ Documentação técnica e de produto da versão **1.0**. Para instalar e usar, c
 | Avaliar a segurança: o que o Lume protege e o que não protege | [Segurança](seguranca.md) |
 | Contribuir com código, testes ou traduções | [Desenvolvimento](desenvolvimento.md) |
 | Saber quais bibliotecas e fontes de dados o Lume usa | [Licenças de terceiros](licencas-de-terceiros.md) |
-| Publicar o projeto no GitHub (mantenedor) | [Publicar no GitHub](publicar-no-github.md) |
 
 ## Outros documentos
 
@@ -24,9 +23,6 @@ Documentação técnica e de produto da versão **1.0**. Para instalar e usar, c
 - [Como contribuir](../CONTRIBUTING.md) · [Código de conduta](../CODE_OF_CONDUCT.md) ·
   [Política de segurança](../SECURITY.md)
 - [Mapa da stack](img/stack.png)
-- `historico/`: especificações das versões 0.2 e 0.3 e as revisões de cada tela feitas antes da
-  1.0 (`historico/revisoes/`). Servem para entender decisões passadas; o que vale hoje está nos
-  documentos acima.
 
 ## Convenções desta documentação
 

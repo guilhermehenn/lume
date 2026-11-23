@@ -1,5 +1,4 @@
-# Atualizações automáticas de dependências. O back-end usa uv.lock, que o Dependabot ainda
-# não atualiza em todos os casos; para ele, rode "uv lock --upgrade" num PR de manutenção.
+# Atualizações automáticas de dependências: front-end (npm), back-end (uv) e GitHub Actions.
 version: 2
 updates:
   - package-ecosystem: npm
@@ -18,6 +17,18 @@ updates:
         dependency-type: production
         update-types: [minor, patch]
 
+  - package-ecosystem: uv
+    directory: /backend
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: chore
+      include: scope
+    groups:
+      backend:
+        update-types: [minor, patch]
+
   - package-ecosystem: github-actions
     directory: /
     schedule:
@@ -25,3 +36,6 @@ updates:
     commit-message:
       prefix: chore
       include: scope
+    groups:
+      actions:
+        patterns: ["*"]

@@ -9,7 +9,7 @@
 App de finanças pessoais de código aberto que roda **no seu computador**.
 A interface abre no navegador, e os dados ficam em arquivos seus, sem nuvem e sem conta online.
 
-[![Versão](https://img.shields.io/badge/versão-1.0.0-0A84FF)](CHANGELOG.md)
+[![Versão](https://img.shields.io/github/v/release/guilhermehenn/lume?label=vers%C3%A3o&color=0A84FF)](https://github.com/guilhermehenn/lume/releases/latest)
 [![Licença: AGPL-3.0](https://img.shields.io/badge/licença-AGPL--3.0-blue)](LICENSE)
 [![Windows | macOS](https://img.shields.io/badge/Windows%2010%2F11%20%7C%20macOS%2012%2B-supported-lightgrey)](#instalação)
 [![CI](https://github.com/guilhermehenn/lume/actions/workflows/ci.yml/badge.svg)](https://github.com/guilhermehenn/lume/actions/workflows/ci.yml)

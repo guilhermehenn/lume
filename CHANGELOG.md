@@ -27,9 +27,8 @@ Primeira versão pública e de código aberto.
 
 - Versão 1.0.0 em todo o projeto. Metadados de licença e repositório em `package.json` e
   `pyproject.toml`.
-- Documentos das versões anteriores movidos para `docs/historico/`.
 
-## [0.3.11] - 2026-11-21
+## 0.3.11 - 2026-11-21
 
 ### Corrigido
 
@@ -45,7 +44,7 @@ Primeira versão pública e de código aberto.
 
 - Confirmação para remover o e-mail de envio; o menu da conta mostra o cofre aberto.
 
-## [0.3.10] - 2026-11-21
+## 0.3.10 - 2026-11-21
 
 ### Adicionado
 
@@ -58,7 +57,7 @@ Primeira versão pública e de código aberto.
 - Desfazer uma restauração volta também idioma, tema e moeda.
 - Um valor de configuração estragado não leva mais os outros de volta ao padrão.
 
-## [0.3.9] - 2026-11-21
+## 0.3.9 - 2026-11-21
 
 ### Adicionado
 
@@ -74,20 +73,20 @@ Primeira versão pública e de código aberto.
 - Restauração de backups grandes (acima de 50 MB), datas de amanhã em nomes de arquivo depois das
   21h, quantidades em notação científica no CSV e e-mails grandes demais.
 
-## [0.3.8] - 2026-11-20
+## 0.3.8 - 2026-11-20
 
 ### Adicionado
 
 - Relatórios salvos com período relativo ("Este mês"), "Salvar como novo", detalhe de uma
   categoria com um clique, busca sem acento e resultado de vendas no ano.
 
-## [0.3.7] - 2026-11-20
+## 0.3.7 - 2026-11-20
 
 ### Adicionado
 
 - Categorias sem nome repetido, destino sugerido ao excluir e "Ver lançamentos".
 
-## [0.3.6] - 2026-11-20
+## 0.3.6 - 2026-11-20
 
 ### Corrigido
 
@@ -97,7 +96,7 @@ Primeira versão pública e de código aberto.
 
 - Bancos sem nome repetido, bancos sem uso recolhidos e "Ver lançamentos".
 
-## [0.3.5] - 2026-11-20
+## 0.3.5 - 2026-11-20
 
 ### Corrigido
 
@@ -108,7 +107,7 @@ Primeira versão pública e de código aberto.
 
 - Filtro da carteira pelo gráfico e posições encerradas com o resultado.
 
-## [0.3.4] - 2026-11-20
+## 0.3.4 - 2026-11-20
 
 ### Adicionado
 
@@ -118,32 +117,32 @@ Primeira versão pública e de código aberto.
 
 - O filtro de tipo não zera mais os outros totais do mês.
 
-## [0.3.3] - 2026-11-20
+## 0.3.3 - 2026-11-20
 
 ### Corrigido
 
 - O saldo de hoje não conta lançamentos futuros, que passam a aparecer em "Próximos".
 
-## [0.3.2] - 2026-11-20
+## 0.3.2 - 2026-11-20
 
 ### Adicionado
 
 - "Salvar e criar outro", Desfazer depois de salvar, atalhos Hoje e Ontem.
 
-## [0.3.1] - 2026-11-20
+## 0.3.1 - 2026-11-20
 
 ### Adicionado
 
 - Código de recuperação do cofre, nome de cofre único e idioma na tela de entrada.
 
-## [0.3.0] - 2026-11-19
+## 0.3.0 - 2026-11-19
 
 ### Adicionado
 
 - Cofres: cada um é um arquivo SQLite com dono, e-mail e senha. Minha conta, troca de cofre e
   envio de relatórios pelo e-mail do próprio usuário.
 
-## [0.2.0] - 2026-11-18
+## 0.2.0 - 2026-11-18
 
 ### Adicionado
 
@@ -152,16 +151,3 @@ Primeira versão pública e de código aberto.
 
 [Não lançado]: https://github.com/guilhermehenn/lume/compare/v1.0.0...HEAD
 [1.0.0]: https://github.com/guilhermehenn/lume/releases/tag/v1.0.0
-[0.3.11]: docs/historico/revisoes/revisao-conta-v0.3.11.md
-[0.3.10]: docs/historico/revisoes/revisao-configuracoes-v0.3.10.md
-[0.3.9]: docs/historico/revisoes/revisao-exportar-v0.3.9.md
-[0.3.8]: docs/historico/revisoes/revisao-relatorios-v0.3.8.md
-[0.3.7]: docs/historico/revisoes/revisao-categorias-v0.3.7.md
-[0.3.6]: docs/historico/revisoes/revisao-bancos-v0.3.6.md
-[0.3.5]: docs/historico/revisoes/revisao-investimentos-v0.3.5.md
-[0.3.4]: docs/historico/revisoes/revisao-lancamentos-v0.3.4.md
-[0.3.3]: docs/historico/revisoes/revisao-inicio-v0.3.3.md
-[0.3.2]: docs/historico/revisoes/revisao-novo-v0.3.2.md
-[0.3.1]: docs/historico/revisoes/revisao-entrada-v0.3.1.md
-[0.3.0]: docs/historico/produto-v0.3.md
-[0.2.0]: docs/historico/produto-v0.2.md
