@@ -15,7 +15,7 @@ import { cn } from '../../lib/cn'
 import { todayISO } from '../../lib/dates'
 import { DataError, LIMITS, primaryBank } from '../../data/model'
 import { counterpartyMemory } from '../../data/selectors'
-import { actions, undo, useData } from '../../data/store'
+import { actions, captureUndoAction, useData } from '../../data/store'
 import type { DataState, Investment, Kind, Transaction } from '../../data/types'
 import { INVESTMENT_OPERATIONS } from '../../data/types'
 import { useI18n } from '../../i18n'
@@ -305,7 +305,7 @@ function EntryForm({ request, open }: { request: EntryRequest; open: boolean }) 
     try {
       if (editingInv) actions.deleteInvestment(editingInv.id)
       else if (editingTx) actions.deleteTransaction(editingTx.id)
-      toast(t('transactions.deleted'), { action: { label: t('common.undo'), onClick: () => undo() } })
+      toast(t('transactions.deleted'), { action: captureUndoAction(t('common.undo')) })
     } catch {
       toast.error(t('errors.notFound'))
     }

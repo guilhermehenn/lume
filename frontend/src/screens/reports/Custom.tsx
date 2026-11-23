@@ -9,7 +9,7 @@ import { transactionsCsv } from '../../data/exporters'
 import { DataError, LIMITS } from '../../data/model'
 import { counterpartyLabels, filterTransactions, groupTransactions } from '../../data/selectors'
 import { useOwnerName } from '../../data/session'
-import { actions, undo, useData } from '../../data/store'
+import { actions, captureUndoAction, useData } from '../../data/store'
 import type { Kind, ReportFilters, ReportGroupBy, SavedReport } from '../../data/types'
 import { exportContext, useI18n } from '../../i18n'
 import { cn } from '../../lib/cn'
@@ -125,7 +125,7 @@ export function Custom({
   const remove = (report: SavedReport) => {
     actions.deleteReport(report.id)
     if (currentId === report.id) set('currentId', undefined)
-    toast(t('reports.deletedReport'), { action: { label: t('common.undo'), onClick: () => undo() } })
+    toast(t('reports.deletedReport'), { action: captureUndoAction(t('common.undo')) })
   }
   const clear = () => {
     setState(() => emptyCustom())

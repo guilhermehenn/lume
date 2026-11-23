@@ -2,7 +2,7 @@
 // despesas" ou "Outras receitas"); sem outra do mesmo tipo, o diálogo explica o que fazer antes.
 
 import { useState } from 'react'
-import { actions, undo, useData } from '../../data/store'
+import { actions, captureUndoAction, useData } from '../../data/store'
 import type { Category } from '../../data/types'
 import { useI18n } from '../../i18n'
 import { useLatest } from '../../ui/display'
@@ -47,7 +47,7 @@ export function DeleteCategoryDialog({
     try {
       actions.deleteCategory(category.id, moving ? target : undefined)
       const message = moving && targetOption ? t('categories.deletedMoved', { count, target: targetOption.label }) : t('categories.deleted')
-      toast(message, { action: { label: t('common.undo'), onClick: () => undo() } })
+      toast(message, { action: captureUndoAction(t('common.undo')) })
       onDeleted()
     } catch {
       toast.error(t('errors.generic'))
