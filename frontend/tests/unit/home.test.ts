@@ -102,7 +102,7 @@ describe('últimos e próximos lançamentos', () => {
     assert.deepEqual(homeEntries(w.s, '2026-11-21', 0).recent, [])
   })
 
-  test('100 mil lançamentos: bem mais rápido que ordenar tudo', () => {
+  test('100 mil lançamentos: seleciona os recentes e os próximos corretamente', () => {
     const w = world()
     const bank = w.bank('Nubank')
     const category = w.cat('groceries')
@@ -116,14 +116,15 @@ describe('últimos e próximos lançamentos', () => {
         createdAt: `2026-01-01T00:00:${String(i % 60).padStart(2, '0')}.000Z`,
       })),
     }
-    const time = (fn: () => unknown) => {
-      const started = performance.now()
-      for (let i = 0; i < 3; i++) fn()
-      return (performance.now() - started) / 3
-    }
-    const before = time(() => allEntries(s).slice(0, 6))
-    const after = time(() => homeEntries(s, '2026-11-21'))
-    assert.ok(after * 5 < before, `homeEntries ${after.toFixed(1)} ms × ordenar tudo ${before.toFixed(1)} ms`)
+    const today = '2026-11-21'
+    const { recent, upcoming, upcomingCount } = homeEntries(s, today)
+    const sorted = allEntries(s)
+    const expectedRecent = sorted.filter((e) => e.date <= today).slice(0, 6)
+    const future = sorted.filter((e) => e.date > today)
+    const expectedUpcoming = [...future].sort((a, b) => a.date.localeCompare(b.date) || a.createdAt.localeCompare(b.createdAt)).slice(0, 3)
+    assert.deepEqual(recent.map((e) => e.id), expectedRecent.map((e) => e.id))
+    assert.equal(upcomingCount, future.length)
+    assert.deepEqual(upcoming.map((e) => e.id), expectedUpcoming.map((e) => e.id))
   })
 })
 

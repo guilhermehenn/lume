@@ -286,12 +286,20 @@ def test_processo_morto_no_meio_das_gravacoes_nao_corrompe(isolated_settings):
     finally:
         proc.kill()  # sem aviso, como queda de energia do processo
         proc.wait(10)
-    with store.connect(path) as conn:
-        assert conn.execute("PRAGMA integrity_check").fetchone()[0] == "ok"
-        rev = store.revision(conn)
-        crashed = conn.execute(
-            "SELECT COUNT(*) FROM transactions WHERE id LIKE 'crash%'"
-        ).fetchone()[0]
+    try:
+        with store.connect(path) as conn:
+            assert conn.execute("PRAGMA integrity_check").fetchone()[0] == "ok"
+            rev = store.revision(conn)
+            crashed = conn.execute(
+                "SELECT COUNT(*) FROM transactions WHERE id LIKE 'crash%'"
+            ).fetchone()[0]
+    except sqlite3.Error as exc:
+        exc.add_note(
+            f"SQLite={sqlite3.sqlite_version}; "
+            f"codigo={getattr(exc, 'sqlite_errorcode', 'desconhecido')}; "
+            f"nome={getattr(exc, 'sqlite_errorname', 'desconhecido')}"
+        )
+        raise
     # Cada gravação confirmada aumentou a revisão em 1 e trouxe exatamente 1 lançamento.
     assert crashed == rev - 1
     assert rev >= 15

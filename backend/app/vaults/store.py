@@ -13,6 +13,8 @@ import dataclasses
 import functools
 import json
 import sqlite3
+import sys
+import time
 from collections.abc import Callable, Hashable, Iterator
 from dataclasses import dataclass
 from datetime import UTC, datetime
@@ -191,16 +193,38 @@ def connect(path: Path, *, readonly: bool = False) -> Iterator[sqlite3.Connectio
       aqui são poucas e pequenas).
     - ``foreign_keys=ON`` em toda conexão (no SQLite vem desligado).
     """
-    if readonly:
-        conn = sqlite3.connect(f"{path.resolve().as_uri()}?mode=ro", uri=True, timeout=10)
-    else:
-        conn = sqlite3.connect(path, timeout=10, isolation_level=None)
-    conn.row_factory = sqlite3.Row
+    # Windows pode demorar a liberar a memória compartilhada de um processo encerrado.
+    # O SQLite anterior à correção 7c103a0b7d pode devolver SQLITE_IOERR_TRUNCATE
+    # durante essa janela. Tentar apenas a abertura, sem repetir operações do usuário.
+    deadline = time.monotonic() + 3.0
+    while True:
+        conn = None
+        try:
+            if readonly:
+                conn = sqlite3.connect(f"{path.resolve().as_uri()}?mode=ro", uri=True, timeout=10)
+            else:
+                conn = sqlite3.connect(path, timeout=10, isolation_level=None)
+            conn.row_factory = sqlite3.Row
+            conn.execute("PRAGMA foreign_keys=ON")
+            if not readonly:
+                conn.execute("PRAGMA journal_mode=WAL")
+                conn.execute("PRAGMA synchronous=FULL")
+        except BaseException as exc:
+            if conn is not None:
+                conn.close()
+            if (
+                sys.platform != "win32"
+                or not isinstance(exc, sqlite3.OperationalError)
+                or getattr(exc, "sqlite_errorcode", None) != sqlite3.SQLITE_IOERR_TRUNCATE
+            ):
+                raise
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                raise
+            time.sleep(min(0.05, remaining))
+        else:
+            break
     try:
-        conn.execute("PRAGMA foreign_keys=ON")
-        if not readonly:
-            conn.execute("PRAGMA journal_mode=WAL")
-            conn.execute("PRAGMA synchronous=FULL")
         yield conn
     finally:
         conn.close()
