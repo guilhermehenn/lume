@@ -29,9 +29,10 @@ resolver problemas.
 | Internet | na instalação; depois, só para cotações, notícias e envio de e-mail |
 | Navegador | Edge, Chrome ou Safari atualizados |
 
-O script de configuração instala o que faltar: Git, [uv](https://docs.astral.sh/uv/) (que traz
-o Python 3.13) e Node.js LTS. Ele usa só fontes oficiais (winget, Homebrew, astral.sh) e não muda
-configurações de segurança do sistema.
+O script de configuração instala o que faltar. Com o ZIP da versão, só o [uv](https://docs.astral.sh/uv/)
+(que traz o Python 3.13): a interface já vem compilada. Com o repositório clonado, também o Git e
+o Node.js LTS. Ele usa só fontes oficiais (winget, Homebrew, astral.sh) e não muda configurações
+de segurança do sistema.
 
 ## Instalar
 
@@ -42,8 +43,8 @@ repositório:
 git clone https://github.com/guilhermehenn/lume.git
 ```
 
-O script de configuração instala as dependências, monta a interface, prepara a pasta de dados,
-faz o primeiro backup, roda os testes e verifica tudo. Pode rodar de novo quando quiser: o que já
+O script de configuração instala as dependências, prepara a pasta de dados, faz o primeiro backup
+e verifica tudo. Com o repositório clonado, ele também monta a interface e roda os testes. Pode rodar de novo quando quiser: o que já
 existe é mantido. Cada execução grava um log em `setup/logs/`.
 
 ### Windows 10/11

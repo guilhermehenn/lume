@@ -62,6 +62,9 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 BACKEND="$ROOT/backend"
 FRONTEND="$ROOT/frontend"
+# Pacote da release: a interface já vem compilada, sem o código do front-end nem os testes.
+PACKAGE=0
+if [ ! -f "$FRONTEND/package.json" ] && [ -f "$FRONTEND/dist/index.html" ]; then PACKAGE=1; fi
 LOG_DIR="$ROOT/setup/logs"
 mkdir -p "$LOG_DIR"
 LOG_FILE="$LOG_DIR/setup-macos_$(date +%Y-%m-%d_%H-%M-%S).log"
@@ -388,7 +391,7 @@ setup_backend() {
   step "Banco de dados local e backup"
   uv run --frozen python -m app.cli setup
 
-  if [ "$SKIP_TESTS" -eq 0 ]; then
+  if [ "$SKIP_TESTS" -eq 0 ] && [ -d "$BACKEND/tests" ]; then
     step "Testes automáticos"
     uv run --frozen pytest
     ok "Todos os testes passaram"
@@ -463,10 +466,17 @@ main() {
   printf '\n%sConfiguração do ambiente (macOS)%s\nProjeto: %s\n' "$C_CYAN" "$C_RESET" "$ROOT"
   check_system
   prepare_project_files
-  install_homebrew
-  install_git
+  if [ "$PACKAGE" -eq 1 ]; then
+    # Só o uv é necessário: usa o Homebrew se já existir, sem pedir para instalar.
+    BREW="$(find_brew)"
+    if [ -n "$BREW" ]; then eval "$("$BREW" shellenv)"; fi
+    info "Pacote pronto: a interface já vem compilada. Git, Homebrew e Node.js não são necessários."
+  else
+    install_homebrew
+    install_git
+  fi
   install_uv
-  install_node
+  if [ "$PACKAGE" -eq 0 ]; then install_node; fi
   install_vscode
   setup_frontend
   setup_backend

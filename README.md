@@ -94,8 +94,9 @@ A especificação completa, tela por tela, está em [docs/funcionalidades.md](do
 ## Instalação
 
 **Requisitos:** Windows 10/11 ou macOS 12 (Monterey) ou mais novo, internet na primeira vez e
-cerca de 2 GB livres. O script de configuração instala o que faltar: Git, [uv](https://docs.astral.sh/uv/),
-Python 3.13 e Node.js LTS.
+cerca de 2 GB livres. O script de configuração instala o que faltar. Com o ZIP da versão, só o
+[uv](https://docs.astral.sh/uv/) e o Python 3.13: a interface já vem pronta. Com o repositório
+clonado, também o Git e o Node.js LTS, para montar a interface.
 
 1. Baixe o ZIP da [versão mais recente](https://github.com/guilhermehenn/lume/releases/latest)
    ou clone o repositório:

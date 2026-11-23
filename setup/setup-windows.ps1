@@ -60,6 +60,8 @@ $MinFreeGB = 2
 $Root = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..')).Path
 $Backend = Join-Path $Root 'backend'
 $Frontend = Join-Path $Root 'frontend'
+# Pacote da release: a interface já vem compilada, sem o código do front-end nem os testes.
+$Pacote = (-not (Test-Path -LiteralPath (Join-Path $Frontend 'package.json'))) -and (Test-Path -LiteralPath (Join-Path $Frontend 'dist\index.html'))
 $LogDir = Join-Path $Root 'setup\logs'
 $LogFile = Join-Path $LogDir ('setup-windows_{0}.log' -f (Get-Date -Format 'yyyy-MM-dd_HH-mm-ss'))
 $script:Warnings = New-Object System.Collections.Generic.List[string]
@@ -385,7 +387,7 @@ function Initialize-Backend {
         Write-Step 'Banco de dados local e backup'
         Invoke-Native -FilePath 'uv' -ArgumentList @('run', '--frozen', 'python', '-m', 'app.cli', 'setup') -Description 'Preparação do banco'
 
-        if (-not $PularTestes) {
+        if (-not $PularTestes -and (Test-Path -LiteralPath (Join-Path $Backend 'tests'))) {
             Write-Step 'Testes automáticos'
             Invoke-Native -FilePath 'uv' -ArgumentList @('run', '--frozen', 'pytest') -Description 'Testes automáticos'
             Write-Ok 'Todos os testes passaram'
@@ -468,9 +470,14 @@ function Invoke-Main {
 
     Test-Prerequisites
     Unblock-ProjectScripts
-    Install-Git
+    if ($Pacote) {
+        Write-Info 'Pacote pronto: a interface já vem compilada. Git e Node.js não são necessários.'
+    }
+    else {
+        Install-Git
+    }
     Install-Uv
-    Install-Node
+    if (-not $Pacote) { Install-Node }
     Install-VSCode
     Initialize-Frontend
     Initialize-Backend
